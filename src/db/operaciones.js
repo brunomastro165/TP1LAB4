@@ -36,6 +36,20 @@ export const traerNoticias = async () => {
   }
 };
 
+export const traerNoticiaId = async (id) => {
+  try {
+    const q = query(collection(db, "Noticia"), where("idEmpresa", "==", id));
+    const querySnapshot = await getDocs(q);
+    const noticias = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("esto");
+    console.log(noticias.length);
+    return noticias;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // CREATE
 export const agregarEmpresa = async (
   nombreEmpresaN,
@@ -44,11 +58,27 @@ export const agregarEmpresa = async (
   emailN,
   horarioAtencionN,
   latitudN,
+  longitudN,
   quienesSomosN,
   telefonoN
 ) => {
   try {
+    let ids = [];
+    await traerEmpresas().then((empresas) => {
+      empresas.map((empresa) => {
+        ids.push(empresa.id);
+      });
+    });
+
+    ids = ids.sort();
+
+    let id = 0;
+    if (ids.length > 0) {
+      id = ids[ids.length - 1] + 1;
+    }
+
     await addDoc(collection(db, "Empresa"), {
+      id: id,
       nombreEmpresa: nombreEmpresaN,
       denominacion: denominacionN,
       domicilio: domicilioN,
@@ -57,19 +87,20 @@ export const agregarEmpresa = async (
       latitud: latitudN,
       quienesSomos: quienesSomosN,
       telefono: telefonoN,
+      longitud: longitudN,
     });
   } catch (error) {
     console.error("Error al leer datos: ", error);
   }
 };
 
-export const agregarNoticia = async (nombreNuevo, precioNuevo, stockNuevo) => {
+export const agregarNoticia = async (idEmpresa, textoEjemplo) => {
   try {
     await addDoc(collection(db, "Noticia"), {
-      nombre: nombreNuevo,
-      precio: precioNuevo,
-      stock: stockNuevo,
-      actualizaciones:
+      id: "Placeholder",
+      idEmpresa: idEmpresa,
+      textoEjemplo: textoEjemplo,
+      fecha:
         new Date().toLocaleDateString() +
         " | " +
         new Date().toLocaleTimeString(),
@@ -80,27 +111,40 @@ export const agregarNoticia = async (nombreNuevo, precioNuevo, stockNuevo) => {
 };
 
 //Update
-export const updateData = async (id, nombreNuevo, precioNuevo, stockNuevo) => {
+export const modificarEmpresa = async (
+  id,
+  nombreEmpresaN,
+  denominacionN,
+  domicilioN,
+  emailN,
+  horarioAtencionN,
+  latitudN,
+  longitudN,
+  quienesSomosN,
+  telefonoN
+) => {
   try {
-    const q = query(collection(db, "productos"), where("nombre", "==", id));
+    const q = query(collection(db, "Empresa"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
 
+    console.log(querySnapshot);
     let docId;
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       docId = doc.id;
     });
 
-    const pedidoRef = doc(db, "productos", docId);
+    const idRef = doc(db, "Empresa", docId);
 
-    await updateDoc(pedidoRef, {
-      nombre: nombreNuevo,
-      precio: precioNuevo,
-      stock: stockNuevo,
-      actualizaciones:
-        new Date().toLocaleDateString() +
-        " | " +
-        new Date().toLocaleTimeString(),
+    await updateDoc(idRef, {
+      nombreEmpresa: nombreEmpresaN,
+      denominacion: denominacionN,
+      domicilio: domicilioN,
+      email: emailN,
+      horarioAtencion: horarioAtencionN,
+      latitud: latitudN,
+      quienesSomos: quienesSomosN,
+      telefono: telefonoN,
+      longitud: longitudN,
     });
 
     console.log("Enviado con éxito");
@@ -111,20 +155,19 @@ export const updateData = async (id, nombreNuevo, precioNuevo, stockNuevo) => {
 
 //Delete
 
-export const deleteData = async (id) => {
+export const eliminarEmpresa = async (id) => {
   try {
-    const q = query(collection(db, "productos"), where("nombre", "==", id));
+    const q = query(collection(db, "Empresa"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
 
     let docId;
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       docId = doc.id;
     });
 
-    const pedidoRef = doc(db, "productos", docId);
+    const idRef = doc(db, "Empresa", docId);
 
-    await deleteDoc(pedidoRef);
+    await deleteDoc(idRef);
 
     console.log("Eliminado con éxito");
   } catch (error) {

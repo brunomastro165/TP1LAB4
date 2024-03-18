@@ -8,12 +8,21 @@ const Container = () => {
   const [isOpen, setOpen] = useState(false);
   const [update, setUpdate] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const [modificado, setModificado] = useState(false);
+  const [eliminado, setEliminado] = useState(false);
 
   useEffect(() => {
     traerEmpresas().then((empresa) => {
       setEmpresas(empresa);
     });
   }, [update]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setModificado(false);
+      setEliminado(false);
+    }, 4000);
+  }, [modificado, eliminado]);
 
   const [form, setForm] = useState({
     nombreEmpresa: "",
@@ -61,7 +70,9 @@ const Container = () => {
       telefono: "",
     });
 
-    setUpdate(!update);
+    setTimeout(() => {
+      setUpdate(!update);
+    }, 500);
 
     setEnviado(true);
 
@@ -70,17 +81,38 @@ const Container = () => {
     }, 4000);
   };
 
-  console.log(empresas);
   return (
-    <div className="w-full bg-slate-200">
+    <div className="w-full ">
       <div
-        className={`flex flex-row fixed bg-white p-5 w-44 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
-          enviado ? "translate-x-0 " : "-translate-x-48 "
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          enviado ? "translate-x-0 " : "-translate-x-72 "
         }`}
       >
         <div className="h-14 p-1 rounded-md bg-green-400" />
         <h1 className="text-green-400 font-semibold text-xl">
-          Se subió la Empresa
+          Se subió una Empresa
+        </h1>
+      </div>
+
+      <div
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          modificado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
+      >
+        <div className="h-14 p-1 rounded-md bg-yellow-400" />
+        <h1 className="text-yellow-400 font-semibold text-xl">
+          Se modificó una empresa
+        </h1>
+      </div>
+
+      <div
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          eliminado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
+      >
+        <div className="h-14 p-1 rounded-md bg-red-500" />
+        <h1 className="text-red-500 font-semibold text-xl">
+          Se eliminó una empresa
         </h1>
       </div>
 
@@ -93,8 +125,22 @@ const Container = () => {
             <>
               <Card
                 key={empresa.id}
-                nombre={empresa.nombreEmpresa}
+                id={empresa.id}
+                nombreEmpresa={empresa.nombreEmpresa}
                 denominacion={empresa.denominacion}
+                domicilio={empresa.domicilio}
+                latitud={empresa.latitud}
+                longitud={empresa.longitud}
+                email={empresa.email}
+                horarioAtencion={empresa.horarioAtencion}
+                quienesSomos={empresa.quienesSomos}
+                telefono={empresa.telefono}
+                setUpdate={setUpdate}
+                update={update}
+                setModificado={setModificado}
+                modificado={modificado}
+                setEliminado={setEliminado}
+                eliminado={eliminado}
               />
             </>
           );
@@ -111,8 +157,8 @@ const Container = () => {
         >
           <h1 className="flex items-center justify-center text-center">
             {" "}
-            Agregar Empresa{" "}
-            <span className="flex items-center justify-center text-5xl pb-4 font-extrabold bg-white rounded-md self-center text-green-400 ml-5 p-2">
+            <h2 className="hidden md:block">Agregar Empresa </h2>
+            <span className="flex items-center justify-center text-5xl pb-4 font-extrabold bg-white rounded-md self-center text-green-400 md:ml-5 p-2">
               +
             </span>
           </h1>

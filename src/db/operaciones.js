@@ -94,17 +94,42 @@ export const agregarEmpresa = async (
   }
 };
 
-export const agregarNoticia = async (idEmpresa, textoEjemplo) => {
+export const agregarNoticia = async (
+  tituloDeNoticia,
+  resumenNoticia,
+  imagenNoticia,
+  contenidoHTML,
+  publicada,
+  fecha,
+  idEmpresa
+) => {
   try {
-    await addDoc(collection(db, "Noticia"), {
-      id: "Placeholder",
-      idEmpresa: idEmpresa,
-      textoEjemplo: textoEjemplo,
-      fecha:
-        new Date().toLocaleDateString() +
-        " | " +
-        new Date().toLocaleTimeString(),
+    let ids = [];
+    await traerNoticias().then((noticias) => {
+      noticias.map((noticia) => {
+        ids.push(noticia.id);
+      });
     });
+
+    ids = ids.sort();
+
+    let id = 0;
+    if (ids.length > 0) {
+      id = ids[ids.length - 1] + 1;
+    }
+
+    await addDoc(collection(db, "Noticia"), {
+      id: id,
+      tituloDeNoticia: tituloDeNoticia,
+      resumenNoticia: resumenNoticia,
+      imagenNoticia: imagenNoticia,
+      contenidoHTML: contenidoHTML,
+      publicada: publicada,
+      fecha: fecha,
+      idEmpresa: 10,
+    });
+
+    console.log("Se envío todo bien");
   } catch (error) {
     console.error("Error al leer datos: ", error);
   }

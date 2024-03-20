@@ -3,18 +3,20 @@ import { useLocation } from "react-router-dom";
 import NoticiaCard from "./NoticiaCard";
 import { agregarNoticia, traerNoticiaId } from "../../../db/operaciones";
 import { useNavigate } from "react-router-dom";
+import { subirArchivo } from "../../../db/subirArchivos";
 
 const NoticiaPage = () => {
   const location = useLocation();
-  const [update, setUpdate] = useState(false);
-  const [noticias, setNoticias] = useState(location.state);
+  const [noticia, setNoticia] = useState([]);
+  const [idEmpresa, setIdEmpresa] = useState(0);
   const [isOpen, setOpen] = useState(false);
 
+  //Listo que capo que soy
   useEffect(() => {
-    setNoticias(location.state);
-  }, [update, location.state]);
-
-  let { noticia } = noticias;
+    const { noticia, id } = location.state;
+    setNoticia(noticia);
+    setIdEmpresa(id);
+  }, [location.state]); // Se ejecuta cada vez que `location.state` cambia
 
   //   useEffect(() => {
   //     setTimeout(() => {
@@ -22,6 +24,8 @@ const NoticiaPage = () => {
   //       setEliminado(false);
   //     }, 4000);
   //   }, [modificado, eliminado]);
+
+  console.log(idEmpresa);
 
   const [form, setForm] = useState({
     tituloDeNoticia: "",
@@ -39,15 +43,16 @@ const NoticiaPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    agregarNoticia(
+    await agregarNoticia(
       form.tituloDeNoticia,
       form.resumenDeNoticia,
       form.imagenNoticia,
       form.contenidoHTML,
       form.publicada,
-      form.fecha
+      form.fecha,
+      idEmpresa
     );
 
     setForm({
@@ -59,13 +64,18 @@ const NoticiaPage = () => {
       fecha: "",
     });
 
-    setTimeout(() => {
-      setUpdate(!update);
-    }, 500);
+    // setTimeout(() => {
+    //   setUpdate(!update);
+    // }, 500);
 
     setOpen(false);
 
-    pushNoticias(10);
+    pushNoticias(idEmpresa);
+  };
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    const url = await subirArchivo(e.target.files[0], "5");
   };
 
   const navigate = useNavigate();
@@ -73,7 +83,9 @@ const NoticiaPage = () => {
   function pushNoticias(id) {
     traerNoticiaId(id)
       .then((noticia) => {
-        navigate("/adminNoticias", { state: { noticia } });
+        console.log("como que es undefined la puta parió");
+        console.log(id);
+        navigate("/adminNoticias", { state: { noticia, id } });
       })
       .catch((error) => {
         console.error("Error obteniendo la noticia: ", error);
@@ -85,7 +97,7 @@ const NoticiaPage = () => {
       {noticia.map((n, i) => {
         return (
           <NoticiaCard
-            key={n.id}
+            key={i}
             tituloDeNoticia={n.tituloDeNoticia}
             resumenDeNoticia={n.resumenDeNoticia}
             imagenNoticia={n.imagenNoticia}
@@ -118,7 +130,7 @@ const NoticiaPage = () => {
         <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 w-full ">
           <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center md:overflow-hidden z-50">
             <h1 className=" text-blue-600 text-2xl font-semibold mb-8">
-              Agregar Empresa
+              Agregar Noticia
             </h1>
 
             <form
@@ -171,13 +183,13 @@ const NoticiaPage = () => {
                       Subir imagen
                     </label>
                     <input
-                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      type="file"
                       aria-describedby="imagenNoticia"
                       id="imagenNoticia"
-                      type="file"
+                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                       name="imagenNoticia"
                       value={form.imagenNoticia}
-                      onChange={handleChange}
+                      onChange={handleUpload}
                     />
                   </div>
                 </div>

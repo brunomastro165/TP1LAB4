@@ -35,8 +35,8 @@ const Card = (props) => {
     });
   };
 
-  const handleSubmit = () => {
-    modificarEmpresa(
+  const handleSubmit = async () => {
+    await modificarEmpresa(
       props.id,
       form.nombreEmpresa,
       form.denominacion,
@@ -64,7 +64,7 @@ const Card = (props) => {
   function pushNoticias(id) {
     traerNoticiaId(id)
       .then((noticia) => {
-        navigate("/adminNoticias", { state: { noticia } });
+        navigate("/adminNoticias", { state: { noticia, id } });
       })
       .catch((error) => {
         console.error("Error obteniendo la noticia: ", error);
@@ -340,8 +340,8 @@ const Card = (props) => {
 
               <button
                 className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 my-2"
-                onClick={() => {
-                  eliminarEmpresa(props.id);
+                onClick={async () => {
+                  await eliminarEmpresa(props.id);
                   setTimeout(() => {
                     props.setUpdate(!props.update);
                     props.setEliminado(true);

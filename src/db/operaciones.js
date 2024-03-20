@@ -41,9 +41,6 @@ export const traerNoticiaId = async (id) => {
     const q = query(collection(db, "Noticia"), where("idEmpresa", "==", id));
     const querySnapshot = await getDocs(q);
     const noticias = querySnapshot.docs.map((doc) => doc.data());
-
-    console.log("esto");
-    console.log(noticias.length);
     return noticias;
   } catch (error) {
     console.error(error);
@@ -71,7 +68,6 @@ export const agregarEmpresa = async (
     });
 
     ids = ids.sort();
-
     let id = 0;
     if (ids.length > 0) {
       id = ids[ids.length - 1] + 1;
@@ -108,11 +104,12 @@ export const agregarNoticia = async (
     await traerNoticias().then((noticias) => {
       noticias.map((noticia) => {
         ids.push(noticia.id);
+        console.log("chucha");
+        console.log(noticia.id);
       });
     });
 
     ids = ids.sort();
-
     let id = 0;
     if (ids.length > 0) {
       id = ids[ids.length - 1] + 1;
@@ -126,7 +123,7 @@ export const agregarNoticia = async (
       contenidoHTML: contenidoHTML,
       publicada: publicada,
       fecha: fecha,
-      idEmpresa: 10,
+      idEmpresa: idEmpresa,
     });
 
     console.log("Se envío todo bien");

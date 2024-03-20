@@ -1,31 +1,39 @@
-import {
-  agregarNoticia,
-  eliminarEmpresa,
-  modificarEmpresa,
-  traerNoticiaId,
-  traerNoticias,
-} from "../../db/operaciones";
 import React, { useState } from "react";
-import NoticiaCard from "./Noticias/NoticiaCard";
+import { useEffect } from "react";
+import { traerEmpresas, agregarEmpresa } from "../../db/operaciones";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
-const Card = (props) => {
+const Container = () => {
+  const [empresas, setEmpresas] = useState([]);
   const [isOpen, setOpen] = useState(false);
-  const [isDelete, setDelete] = useState(false);
-  const [noticias, setNoticias] = useState(false);
-  const [noticiasId, setNoticiasId] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+  const [modificado, setModificado] = useState(false);
+  const [eliminado, setEliminado] = useState(false);
+
+  useEffect(() => {
+    traerEmpresas().then((empresa) => {
+      setEmpresas(empresa);
+    });
+  }, [update]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setModificado(false);
+      setEliminado(false);
+    }, 4000);
+  }, [modificado, eliminado]);
 
   const [form, setForm] = useState({
-    nombreEmpresa: props.nombreEmpresa,
-    denominacion: props.denominacion,
-    domicilio: props.domicilio,
-    email: props.email,
-    horarioAtencion: props.horarioAtencion,
-    latitud: props.latitud,
-    longitud: props.longitud,
-    quienesSomos: props.quienesSomos,
-    telefono: props.telefono,
+    nombreEmpresa: "",
+    denominacion: "",
+    domicilio: "",
+    email: "",
+    horarioAtencion: "",
+    latitud: "",
+    longitud: "",
+    quienesSomos: "",
+    telefono: "",
   });
 
   const handleChange = (e) => {
@@ -35,9 +43,9 @@ const Card = (props) => {
     });
   };
 
-  const handleSubmit = async () => {
-    await modificarEmpresa(
-      props.id,
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    agregarEmpresa(
       form.nombreEmpresa,
       form.denominacion,
       form.domicilio,
@@ -49,59 +57,94 @@ const Card = (props) => {
       form.telefono
     );
 
+    setForm({
+      nombreEmpresa: "",
+      denominacion: "",
+      domicilio: "",
+      email: "",
+      horarioAtencion: "",
+      latitud: "",
+      longitud: "",
+      quienesSomos: "",
+      telefono: "",
+    });
+
     setTimeout(() => {
-      props.setUpdate(!props.update);
+      setUpdate(!update);
     }, 500);
 
-    props.setModificado(true);
+    setEnviado(true);
+
+    setTimeout(() => {
+      setEnviado(false);
+    }, 4000);
 
     setOpen(false);
   };
 
-  //Con esta función manejo el enrutamiento hacia adminNoticias
-  const navigate = useNavigate();
-
-  function pushNoticias(id) {
-    traerNoticiaId(id)
-      .then((noticia) => {
-        navigate("/adminNoticias", { state: { noticia, id } });
-      })
-      .catch((error) => {
-        console.error("Error obteniendo la noticia: ", error);
-      });
-  }
-
   return (
-    <>
-      <li
-        className="py-5 cursor-pointer px-4 md:px-12 hover:bg-slate-100 rounded-md"
-        onClick={() => setOpen(true)}
+    <div className="w-full ">
+      <div
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          enviado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
       >
-        <div className="flex items-center">
-          <div className="flex-shrink-0"></div>
-          <div className="flex-1 min-w-0 ms-4">
-            <p className="text-sm md:text-xl font-medium text-blue-600 truncate ">
-              {props.nombreEmpresa}
-            </p>
-            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-              {props.email}
-            </p>
-          </div>
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-            {props.denominacion}
-          </div>
-        </div>
-      </li>
+        <div className="h-14 p-1 rounded-md bg-green-400" />
+        <h1 className="text-green-400 font-semibold text-xl">
+          Se subió una Empresa
+        </h1>
+      </div>
+
+      <div
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          modificado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
+      >
+        <div className="h-14 p-1 rounded-md bg-yellow-400" />
+        <h1 className="text-yellow-400 font-semibold text-xl">
+          Se modificó una empresa
+        </h1>
+      </div>
+
+      <div
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          eliminado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
+      >
+        <div className="h-14 p-1 rounded-md bg-red-500" />
+        <h1 className="text-red-500 font-semibold text-xl">
+          Se eliminó una empresa
+        </h1>
+      </div>
+
+      <div className="fixed bottom-0 right-5  flex items-end justify-center mb-4">
+        <button
+          onClick={() => setOpen(true)}
+          className="
+          flex flex-row justify-center items-center text-center
+      mt-5
+      p-5 rounded-xl bg-green-400 text-white transition-all hover:scale-105 md:text-xl font-semibold hover:shadow-xl hover:shadow-green-400"
+        >
+          <h1 className="flex items-center justify-center text-center">
+            {" "}
+            <h2 className="hidden md:block">Agregar Empresa </h2>
+            <span className="flex items-center justify-center text-5xl pb-4 font-extrabold bg-white rounded-md self-center text-green-400 md:ml-5 p-2">
+              +
+            </span>
+          </h1>
+        </button>
+      </div>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 w-full  ">
-          <div className="bg-white rounded shadow-lg p-8 m-4 max-h-full text-center md:overflow-hidden z-50 w-full md:w-1/2 overflow-scroll">
+        <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 w-full ">
+          <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center md:overflow-hidden z-50">
             <h1 className=" text-blue-600 text-2xl font-semibold mb-8">
-              Modificar {form.nombreEmpresa}
+              Agregar Empresa
             </h1>
+
             <form
-              className="w-full md:max-w-xl mx-auto text-start"
               onSubmit={handleSubmit}
+              className="w-full md:max-w-xl mx-auto text-start "
             >
               <div className="relative z-0 w-full mb-5 group">
                 <input
@@ -112,7 +155,6 @@ const Card = (props) => {
                   placeholder=""
                   value={form.nombreEmpresa}
                   onChange={handleChange}
-                  maxLength={50}
                 />
                 <label
                   htmlFor="nombreEmpresa"
@@ -133,7 +175,6 @@ const Card = (props) => {
                     name="domicilio"
                     value={form.domicilio}
                     onChange={handleChange}
-                    maxLength={256}
                   />
                   <label
                     htmlFor="domicilio"
@@ -152,7 +193,6 @@ const Card = (props) => {
                     name="denominacion"
                     value={form.denominacion}
                     onChange={handleChange}
-                    maxLength={128}
                   />
                   <label
                     htmlFor="denominacion"
@@ -174,7 +214,6 @@ const Card = (props) => {
                     required
                     value={form.email}
                     onChange={handleChange}
-                    maxLength={75}
                   />
                   <label
                     htmlFor="email"
@@ -193,7 +232,6 @@ const Card = (props) => {
                     required
                     value={form.horarioAtencion}
                     onChange={handleChange}
-                    maxLength={256}
                   />
                   <label
                     htmlFor="horarioAtencion"
@@ -235,7 +273,7 @@ const Card = (props) => {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="longitud"
+                    htmlFor="logitud"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Longitud
@@ -255,7 +293,6 @@ const Card = (props) => {
                     required
                     value={form.telefono}
                     onChange={handleChange}
-                    maxLength={50}
                   />
                   <label
                     htmlFor="telefono"
@@ -274,7 +311,6 @@ const Card = (props) => {
                     required
                     value={form.quienesSomos}
                     onChange={handleChange}
-                    maxLength={1024}
                   />
                   <label
                     htmlFor="quienesSomos"
@@ -284,45 +320,19 @@ const Card = (props) => {
                   </label>
                 </div>
               </div>
-
-              <div className=" flex flex-wrap justify-center mt-8 mb-4 font-semibold">
+              <div className="flex flex-wrap justify-center mt-8 mb-4">
                 <button
-                  className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 my-2 md:my-0"
+                  className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 "
                   onClick={() => setOpen(false)}
                 >
                   Cerrar
                 </button>
 
                 <button
+                  className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 transition-all mx-4 w-full md:w-1/4"
                   type="submit"
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700 transition-all mx-4 w-full md:w-1/4 my-2 md:my-0"
                 >
                   Guardar
-                </button>
-              </div>
-
-              <div className="font-semibold  flex justify-center items-center ">
-                <button
-                  className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-10/12"
-                  onClick={() => {
-                    setOpen(false);
-                    setDelete(true);
-                  }}
-                >
-                  Eliminar empresa
-                </button>
-              </div>
-
-              <div className="font-semibold  flex justify-center items-center my-2 text-center">
-                <button
-                  className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition-all mx-4 w-full md:w-10/12"
-                  onClick={() => {
-                    setOpen(false);
-                    setNoticias(true);
-                    pushNoticias(props.id);
-                  }}
-                >
-                  Administrar noticias
                 </button>
               </div>
             </form>
@@ -330,80 +340,8 @@ const Card = (props) => {
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
       )}
-
-      {isDelete && (
-        <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 font-semiboldold ">
-          <div className="bg-white rounded shadow-lg p-8 m-4 max-w-lg max-h-full text-center md:overflow-hidden z-50">
-            <h1 className=" text-red-600 text-2xl font-semibold mb-8">
-              ¿Está seguro de querer eliminar {props.nombreEmpresa}?
-            </h1>
-            <div className="flex flex-wrap justify-center mt-8 mb-4">
-              <button
-                className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 my-2"
-                onClick={() => setDelete(false)}
-              >
-                Cancelar
-              </button>
-
-              <button
-                className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 my-2"
-                onClick={async () => {
-                  await eliminarEmpresa(props.id);
-                  setTimeout(() => {
-                    props.setUpdate(!props.update);
-                    props.setEliminado(true);
-                    setOpen(true);
-                    setDelete(false);
-                  }, 100);
-                }}
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
-      )}
-
-      {noticias && (
-        <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 font-semiboldold w-full">
-          <div className="bg-white rounded shadow-lg p-8 m-4 max-w-lg max-h-full text-center md:overflow-hidden z-50 w-full">
-            <h1 className=" text-red-600 text-2xl font-semibold mb-8">
-              Listado de noticias de {props.nombreEmpresa}:
-            </h1>
-            <div>
-              {noticiasId.map((noticia) => {
-                return <NoticiaCard key={noticia.id} />;
-              })}
-            </div>
-            <div className="flex flex-wrap justify-center mt-8 mb-4">
-              <button
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700 transition-all mx-4 w-full my-2"
-                onClick={() => {
-                  agregarNoticia(props.id, "nuevaNoticia");
-                  setTimeout(() => {
-                    props.setUpdate(!props.update);
-                    setOpen(true);
-                    setNoticias(false);
-                  }, 100);
-                }}
-              >
-                Agregar noticia
-              </button>
-
-              <button
-                className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full my-2"
-                onClick={() => setNoticias(false)}
-              >
-                Volver
-              </button>
-            </div>
-          </div>
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
-      )}
-    </>
+    </div>
   );
 };
 
-export default Card;
+export default Container;

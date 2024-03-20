@@ -2,26 +2,30 @@ import React from "react";
 
 const NoticiaCard = (props) => {
   return (
-    <div className="m-5">
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-col items-center justify-center text-center m-5">
+      <div className=" bg-white border border-gray-200 rounded-lg shadow flex items-center">
         <a href="#">
-          <img
-            className="rounded-t-lg"
-            src="/docs/images/blog/image-1.jpg"
-            alt=""
-          />
+          <div className="w-72 h-72 overflow-hidden rounded-xl m-4">
+            <img
+              className="min-w-full min-h-full object-cover rounded-l-md"
+              src={props.imagenNoticia}
+              alt="imagenNoticia"
+            />
+          </div>
         </a>
-        <div className="p-5">
+        <div className="p-5 overflow-hidden">
           <a href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
               {props.tituloDeNoticia}
             </h5>
           </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Here are the biggest enterprise technology acquisitions of 2021 so
-            far, in reverse chronological order.
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 w-48 h-24 overflow-hidden">
+            {props.resumenNoticia}
           </p>
-          <a className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            (Texto resumido)
+          </p>
+          <a className="inline-flex items-center px-3 p-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 mt-4 ">
             Administrar noticia
             <svg
               className="rtl:rotate-180 w-3.5 h-3.5 ms-2"

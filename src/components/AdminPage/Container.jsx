@@ -118,15 +118,15 @@ const Container = () => {
         </h1>
       </div>
 
-      <div className="mx-8">
-        <div className="w-full  p-4  border border-gray-200 rounded-lg mt-4 mb-4">
+      <div className="mx-8 flex flex-col items-center justify-center">
+        <div className="w-full md:w-2/3 lg:w-1/2 p-4  border border-gray-200 rounded-lg mt-4 mb-4">
           <div className="flex items-center justify-center mb-4 ">
             <h5 className=" font-bold leading-none text-blue-600 text-center text-2xl">
               Listado de empresas
             </h5>
           </div>
 
-          <div className="flow-root">
+          <div className="flow-root w-full">
             <ul role="list" className="divide-y divide-gray-200  ">
               {empresas.map((empresa) => {
                 return (

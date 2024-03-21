@@ -25,25 +25,31 @@ export const Carousel = ({ slides }) => {
           transform: `translateX(-${current * 100}%)`,
         }}
       >
-          {slides.map((s) => {
-            return (
-              <img 
-                src={s} 
-                className="w-full h-full object-cover cursor-pointer z-10" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href=s; // Reemplaza esto con la URL de tu página
-                }}
-              />
-            );
-          })}
+        {slides.map((s) => {
+          return (
+            <img
+              src={s}
+              className="w-full h-full object-cover cursor-pointer z-10"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = s; // Reemplaza esto con la URL de tu página
+              }}
+            />
+          );
+        })}
       </div>
-        <button onClick={previousSlide} className="absolute top-0 h-full float-left justify-between items-center flex text-white px-10 text-3xl ">
-          <BsFillArrowLeftCircleFill />
-        </button>
-        <button onClick={nextSlide} className="absolute top-0  h-full right-0 items-center flex text-white px-10 text-3xl ">
-          <BsFillArrowRightCircleFill />
-        </button>
+      <button
+        onClick={previousSlide}
+        className="absolute top-0 h-full float-left justify-between items-center flex text-white px-10 text-3xl "
+      >
+        <BsFillArrowLeftCircleFill />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute top-0  h-full right-0 items-center flex text-white px-10 text-3xl "
+      >
+        <BsFillArrowRightCircleFill />
+      </button>
       <div className="absolute bottom-0 py-4 flex justify-center gap-3 w-full ">
         {slides.map((s, i) => {
           return (
@@ -61,6 +67,6 @@ export const Carousel = ({ slides }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Carousel;

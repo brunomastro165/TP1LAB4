@@ -5,12 +5,16 @@ import { agregarNoticia, traerNoticiaId } from "../../../db/operaciones";
 import { useNavigate } from "react-router-dom";
 import { subirArchivo } from "../../../db/subirArchivos";
 import { v4 } from "uuid";
+import Tiny from "./TextEditor/Tiny";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const NoticiaPage = () => {
   const location = useLocation();
   const [noticia, setNoticia] = useState([]);
   const [idEmpresa, setIdEmpresa] = useState(0);
   const [isOpen, setOpen] = useState(false);
+  const [textEditor, setTextEditor] = useState(true);
+  const [HTMLText, setHTMLText] = useState("pija?");
 
   //Listo que capo que soy
   useEffect(() => {
@@ -26,7 +30,7 @@ const NoticiaPage = () => {
   //     }, 4000);
   //   }, [modificado, eliminado]);
 
-  console.log(idEmpresa);
+  console.log(HTMLText);
 
   const [form, setForm] = useState({
     tituloDeNoticia: "",
@@ -51,7 +55,7 @@ const NoticiaPage = () => {
       form.tituloDeNoticia,
       form.resumenNoticia,
       form.imagenNoticia,
-      form.contenidoHTML,
+      HTMLText,
       form.publicada,
       form.fecha,
       idEmpresa
@@ -138,7 +142,7 @@ const NoticiaPage = () => {
               Agregar Noticia
             </h1>
 
-            <form
+            <div
               onSubmit={handleSubmit}
               className="w-full md:max-w-xl mx-auto text-start "
             >
@@ -201,25 +205,17 @@ const NoticiaPage = () => {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="text"
-                    name="contenidoHTML"
-                    id="contenidoHTML"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                    value={form.contenidoHTML}
-                    onChange={handleChange}
-                    maxLength={20480}
-                  />
-                  <label
-                    htmlFor="contenidoHTML"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              <div className="grid md:grid-cols-2 md:gap-6 w-full">
+                <div className="flex flex-col items-center md:items-start relative z-0 w-full mb-5 group">
+                  <h1 className="text-gray-500 text-sm">Contenido HTML:</h1>
+                  <button
+                    className="flex px-4 py-2 text-white font-semibold bg-blue-600 rounded hover:bg-blue-700 transition-all self-center items-center w-1/2 md:w-full mt-2 
+                    justify-between  group"
+                    onClick={() => setTextEditor(true)}
                   >
-                    Contenido HTML
-                  </label>
+                    Agregar HTML
+                    <FaArrowCircleRight className="group-hover:translate-x-2 group-hover:scale-110  transition-all ease-in-out -translate-x-2" />
+                  </button>
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                   <label
@@ -281,15 +277,18 @@ const NoticiaPage = () => {
                 <button
                   className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 transition-all mx-4 w-full md:w-1/4"
                   type="submit"
+                  onClick={handleSubmit}
                 >
                   Guardar
                 </button>
               </div>
-            </form>
+            </div>
           </div>
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
       )}
+
+      {textEditor && <Tiny setHTML={setHTMLText} setOpen={setTextEditor} />}
     </div>
   );
 };

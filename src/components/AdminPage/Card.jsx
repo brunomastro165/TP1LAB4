@@ -3,12 +3,13 @@ import {
   eliminarEmpresa,
   modificarEmpresa,
   traerNoticiaId,
-  traerNoticias,
 } from "../../db/operaciones";
 import React, { useState } from "react";
 import NoticiaCard from "./Noticias/NoticiaCard";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { GoPencil } from "react-icons/go";
 
 const Card = (props) => {
   const [isOpen, setOpen] = useState(false);
@@ -73,22 +74,32 @@ const Card = (props) => {
 
   return (
     <>
-      <li
-        className="py-5 cursor-pointer px-4 md:px-12 hover:bg-slate-100 rounded-md"
-        onClick={() => setOpen(true)}
-      >
-        <div className="flex items-center">
+      <li className="py-5 cursor-pointer px-4 md:px-12 hover:bg-slate-100 rounded-md hover:scale-105 transition-all">
+        <div className="flex flex-col md:flex-row items-center">
           <div className="flex-shrink-0"></div>
           <div className="flex-1 min-w-0 ms-4">
             <p className="text-sm md:text-xl font-medium text-blue-600 truncate ">
               {props.nombreEmpresa}
             </p>
-            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-              {props.email}
-            </p>
+            <p className="text-sm text-gray-500 truncate ">{props.email}</p>
           </div>
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-            {props.denominacion}
+          <div className="inline-flex mt-4 md:mt-0 items-center">
+            <div className="  text-base font-semibold  mr-8 bg-blue-600 p-2 rounded-md text-white hover:bg-blue-800">
+              <button
+                onClick={() => {
+                  pushNoticias(props.id);
+                }}
+              >
+                {" "}
+                Noticias
+              </button>
+            </div>
+            <div
+              className="  text-base font-semibold text-gray-900 hover:bg-blue-100  rounded-full p-3"
+              onClick={() => setOpen(true)}
+            >
+              <GoPencil className="size-8 text-gray-900" />
+            </div>
           </div>
         </div>
       </li>
@@ -295,7 +306,7 @@ const Card = (props) => {
 
                 <button
                   type="submit"
-                  className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700 transition-all mx-4 w-full md:w-1/4 my-2 md:my-0"
+                  className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition-all mx-4 w-full md:w-1/4 my-2 md:my-0"
                 >
                   Guardar
                 </button>
@@ -310,19 +321,6 @@ const Card = (props) => {
                   }}
                 >
                   Eliminar empresa
-                </button>
-              </div>
-
-              <div className="font-semibold  flex justify-center items-center my-2 text-center">
-                <button
-                  className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition-all mx-4 w-full md:w-10/12"
-                  onClick={() => {
-                    setOpen(false);
-                    setNoticias(true);
-                    pushNoticias(props.id);
-                  }}
-                >
-                  Administrar noticias
                 </button>
               </div>
             </form>

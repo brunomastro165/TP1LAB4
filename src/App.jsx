@@ -15,6 +15,7 @@ function App() {
         <Route path="/usuario" element={<Container />} />
         <Route path="/AdminNoticias" element={<NoticiaPage />} />
         <Route path="/subirImagen" element={<SubirImagen />} />
+        <Route path="/puto" element={<Empresa />} />
       </Routes>
     </Router>
   );

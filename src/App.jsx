@@ -3,6 +3,7 @@ import NoticiaPage from "./components/AdminPage/Noticias/NoticiaPage";
 import Selector from "./components/Selector/Selector";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SubirImagen from "./components/UploadFileTest/SubirImagen";
+import Empresa from "./components/EmpresaPage/Empresa";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/usuario" element={<Container />} />
         <Route path="/AdminNoticias" element={<NoticiaPage />} />
         <Route path="/subirImagen" element={<SubirImagen />} />
+        <Route path="/puto" element={<Empresa />} />
       </Routes>
     </Router>
   );

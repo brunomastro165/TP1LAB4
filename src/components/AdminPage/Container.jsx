@@ -195,6 +195,7 @@ const Container = () => {
                   placeholder=""
                   value={form.nombreEmpresa}
                   onChange={handleChange}
+                  maxLength={50}
                 />
                 <label
                   htmlFor="nombreEmpresa"
@@ -215,6 +216,7 @@ const Container = () => {
                     name="domicilio"
                     value={form.domicilio}
                     onChange={handleChange}
+                    maxLength={256}
                   />
                   <label
                     htmlFor="domicilio"
@@ -232,6 +234,7 @@ const Container = () => {
                     type="text"
                     name="denominacion"
                     value={form.denominacion}
+                    maxLength={128}
                     onChange={handleChange}
                   />
                   <label
@@ -254,6 +257,7 @@ const Container = () => {
                     required
                     value={form.email}
                     onChange={handleChange}
+                    maxLength={75}
                   />
                   <label
                     htmlFor="email"
@@ -272,6 +276,7 @@ const Container = () => {
                     required
                     value={form.horarioAtencion}
                     onChange={handleChange}
+                    maxLength={256}
                   />
                   <label
                     htmlFor="horarioAtencion"
@@ -313,7 +318,7 @@ const Container = () => {
                     onChange={handleChange}
                   />
                   <label
-                    htmlFor="logitud"
+                    htmlFor="longitud"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Longitud
@@ -333,6 +338,7 @@ const Container = () => {
                     required
                     value={form.telefono}
                     onChange={handleChange}
+                    maxLength={50}
                   />
                   <label
                     htmlFor="telefono"
@@ -351,6 +357,7 @@ const Container = () => {
                     required
                     value={form.quienesSomos}
                     onChange={handleChange}
+                    maxLength={1024}
                   />
                   <label
                     htmlFor="quienesSomos"

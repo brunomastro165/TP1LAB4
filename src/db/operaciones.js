@@ -13,6 +13,8 @@ import { where } from "firebase/firestore";
 
 import { app } from "../../credentials";
 
+import { v4 } from "uuid";
+
 const db = getFirestore(app);
 
 //READ
@@ -60,19 +62,7 @@ export const agregarEmpresa = async (
   telefonoN
 ) => {
   try {
-    let ids = [];
-    await traerEmpresas().then((empresas) => {
-      empresas.map((empresa) => {
-        ids.push(empresa.id);
-      });
-    });
-
-    ids = ids.sort();
-    let id = 0;
-    if (ids.length > 0) {
-      id = ids[ids.length - 1] + 1;
-    }
-
+    const id = v4(); //v4 es un algoritmo que genera ids aleatorias
     await addDoc(collection(db, "Empresa"), {
       id: id,
       nombreEmpresa: nombreEmpresaN,
@@ -100,21 +90,7 @@ export const agregarNoticia = async (
   idEmpresa
 ) => {
   try {
-    let ids = [];
-    await traerNoticias().then((noticias) => {
-      noticias.map((noticia) => {
-        ids.push(noticia.id);
-        console.log("chucha");
-        console.log(noticia.id);
-      });
-    });
-
-    ids = ids.sort();
-    let id = 0;
-    if (ids.length > 0) {
-      id = ids[ids.length - 1] + 1;
-    }
-
+    const id = v4();
     await addDoc(collection(db, "Noticia"), {
       id: id,
       tituloDeNoticia: tituloDeNoticia,

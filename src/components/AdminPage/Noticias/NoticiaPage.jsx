@@ -4,6 +4,7 @@ import NoticiaCard from "./NoticiaCard";
 import { agregarNoticia, traerNoticiaId } from "../../../db/operaciones";
 import { useNavigate } from "react-router-dom";
 import { subirArchivo } from "../../../db/subirArchivos";
+import { v4 } from "uuid";
 
 const NoticiaPage = () => {
   const location = useLocation();
@@ -29,7 +30,7 @@ const NoticiaPage = () => {
 
   const [form, setForm] = useState({
     tituloDeNoticia: "",
-    resumenDeNoticia: "",
+    resumenNoticia: "",
     imagenNoticia: "",
     contenidoHTML: "",
     publicada: "",
@@ -45,9 +46,10 @@ const NoticiaPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     await agregarNoticia(
       form.tituloDeNoticia,
-      form.resumenDeNoticia,
+      form.resumenNoticia,
       form.imagenNoticia,
       form.contenidoHTML,
       form.publicada,
@@ -75,7 +77,12 @@ const NoticiaPage = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    const url = await subirArchivo(e.target.files[0], "5");
+    const url = await subirArchivo(e.target.files[0]);
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      imagenNoticia: url,
+    }));
   };
 
   const navigate = useNavigate();
@@ -83,8 +90,6 @@ const NoticiaPage = () => {
   function pushNoticias(id) {
     traerNoticiaId(id)
       .then((noticia) => {
-        console.log("como que es undefined la puta parió");
-        console.log(id);
         navigate("/adminNoticias", { state: { noticia, id } });
       })
       .catch((error) => {
@@ -99,7 +104,7 @@ const NoticiaPage = () => {
           <NoticiaCard
             key={i}
             tituloDeNoticia={n.tituloDeNoticia}
-            resumenDeNoticia={n.resumenDeNoticia}
+            resumenNoticia={n.resumenNoticia}
             imagenNoticia={n.imagenNoticia}
             contenidoHTML={n.contenidoHTML}
             publicada={n.publicada}
@@ -146,6 +151,7 @@ const NoticiaPage = () => {
                   placeholder=""
                   value={form.tituloDeNoticia}
                   onChange={handleChange}
+                  maxLength={128}
                 />
                 <label
                   htmlFor="tituloDeNoticia"
@@ -162,13 +168,14 @@ const NoticiaPage = () => {
                     placeholder=" "
                     required
                     type="text"
-                    id="resumenDeNoticia"
-                    name="resumenDeNoticia"
-                    value={form.resumenDeNoticia}
+                    id="resumenNoticia"
+                    name="resumenNoticia"
+                    value={form.resumenNoticia}
                     onChange={handleChange}
+                    maxLength={1024}
                   />
                   <label
-                    htmlFor="resumenDeNoticia"
+                    htmlFor="resumenNoticia"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                   >
                     Resumen de la noticia
@@ -186,9 +193,8 @@ const NoticiaPage = () => {
                       type="file"
                       aria-describedby="imagenNoticia"
                       id="imagenNoticia"
-                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
                       name="imagenNoticia"
-                      value={form.imagenNoticia}
                       onChange={handleUpload}
                     />
                   </div>
@@ -206,6 +212,7 @@ const NoticiaPage = () => {
                     required
                     value={form.contenidoHTML}
                     onChange={handleChange}
+                    maxLength={20480}
                   />
                   <label
                     htmlFor="contenidoHTML"

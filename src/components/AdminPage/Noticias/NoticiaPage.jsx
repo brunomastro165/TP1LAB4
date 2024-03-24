@@ -13,8 +13,8 @@ const NoticiaPage = () => {
   const [noticia, setNoticia] = useState([]);
   const [idEmpresa, setIdEmpresa] = useState(0);
   const [isOpen, setOpen] = useState(false);
-  const [textEditor, setTextEditor] = useState(true);
-  const [HTMLText, setHTMLText] = useState("pija?");
+  const [textEditor, setTextEditor] = useState(false);
+  const [HTMLText, setHTMLText] = useState("No tiene HTML");
 
   //Listo que capo que soy
   useEffect(() => {
@@ -29,8 +29,6 @@ const NoticiaPage = () => {
   //       setEliminado(false);
   //     }, 4000);
   //   }, [modificado, eliminado]);
-
-  console.log(HTMLText);
 
   const [form, setForm] = useState({
     tituloDeNoticia: "",
@@ -107,12 +105,14 @@ const NoticiaPage = () => {
         return (
           <NoticiaCard
             key={i}
+            id={n.id}
             tituloDeNoticia={n.tituloDeNoticia}
             resumenNoticia={n.resumenNoticia}
             imagenNoticia={n.imagenNoticia}
             contenidoHTML={n.contenidoHTML}
             publicada={n.publicada}
             fecha={n.fecha}
+            idEmpresa={idEmpresa}
           />
         );
       })}
@@ -186,38 +186,6 @@ const NoticiaPage = () => {
                   </label>
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
-                  <div>
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-900"
-                      htmlFor="imagenNoticia"
-                    >
-                      Subir imagen
-                    </label>
-                    <input
-                      type="file"
-                      aria-describedby="imagenNoticia"
-                      id="imagenNoticia"
-                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
-                      name="imagenNoticia"
-                      onChange={handleUpload}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 md:gap-6 w-full">
-                <div className="flex flex-col items-center md:items-start relative z-0 w-full mb-5 group">
-                  <h1 className="text-gray-500 text-sm">Contenido HTML:</h1>
-                  <button
-                    className="flex px-4 py-2 text-white font-semibold bg-blue-600 rounded hover:bg-blue-700 transition-all self-center items-center w-1/2 md:w-full mt-2 
-                    justify-between  group"
-                    onClick={() => setTextEditor(true)}
-                  >
-                    Agregar HTML
-                    <FaArrowCircleRight className="group-hover:translate-x-2 group-hover:scale-110  transition-all ease-in-out -translate-x-2" />
-                  </button>
-                </div>
-                <div className="relative z-0 w-full mb-5 group">
                   <label
                     htmlFor="publicada"
                     className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
@@ -241,6 +209,39 @@ const NoticiaPage = () => {
                       value="f"
                     />
                     <label htmlFor="opcion2">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 md:gap-6 w-full">
+                <div className="flex flex-col items-center md:items-start relative z-0 w-full mb-5 group">
+                  <h1 className="text-gray-500 text-sm">Contenido HTML:</h1>
+                  <button
+                    className="flex px-4 py-2 text-white font-semibold bg-blue-600 rounded hover:bg-blue-700 transition-all self-center items-center w-1/2 md:w-full mt-2 
+                    justify-between  group"
+                    onClick={() => setTextEditor(true)}
+                  >
+                    Agregar HTML
+                    <FaArrowCircleRight className="group-hover:translate-x-2 group-hover:scale-110  transition-all ease-in-out -translate-x-2" />
+                  </button>
+                </div>
+
+                <div className="relative z-0 w-full mb-5 group">
+                  <div>
+                    <label
+                      className="block mb-2 text-sm font-medium text-gray-900"
+                      htmlFor="imagenNoticia"
+                    >
+                      Subir imagen
+                    </label>
+                    <input
+                      type="file"
+                      aria-describedby="imagenNoticia"
+                      id="imagenNoticia"
+                      className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
+                      name="imagenNoticia"
+                      onChange={handleUpload}
+                    />
                   </div>
                 </div>
               </div>

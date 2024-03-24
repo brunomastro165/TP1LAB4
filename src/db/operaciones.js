@@ -125,7 +125,7 @@ export const modificarEmpresa = async (
     const q = query(collection(db, "Empresa"), where("id", "==", id));
     const querySnapshot = await getDocs(q);
 
-    console.log(querySnapshot);
+    console.log("no de nuevo :(");
     let docId;
     querySnapshot.forEach((doc) => {
       docId = doc.id;
@@ -164,6 +164,40 @@ export const eliminarEmpresa = async (id) => {
     });
 
     const idRef = doc(db, "Empresa", docId);
+    await deleteDoc(idRef);
+    await eliminarNoticiasSubyacientes(id);
+
+    console.log("Eliminado con éxito");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const eliminarNoticiasSubyacientes = async (id) => {
+  try {
+    const noticiasRef = collection(db, "Noticia");
+    const q = query(noticiasRef, where("idEmpresa", "==", id));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const eliminarNoticia = async (id) => {
+  try {
+    const q = query(collection(db, "Noticia"), where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+
+    let docId;
+    querySnapshot.forEach((doc) => {
+      docId = doc.id;
+    });
+
+    const idRef = doc(db, "Noticia", docId);
 
     await deleteDoc(idRef);
 
@@ -173,13 +207,39 @@ export const eliminarEmpresa = async (id) => {
   }
 };
 
-//Traer las compras y exportarlas
-
-export const traerCompras = async () => {
+export const modificarNoticia = async (
+  tituloDeNoticia,
+  resumenNoticia,
+  imagenNoticia,
+  contenidoHTML,
+  publicada,
+  fecha,
+  idEmpresa,
+  id
+) => {
   try {
-    const querySnapshot = await getDocs(collection(db, "compras"));
-    const compras = querySnapshot.docs.map((doc) => doc.data());
-    return compras;
+    const q = query(collection(db, "Noticia"), where("id", "==", id));
+    const querySnapshot = await getDocs(q);
+
+    let docId;
+    querySnapshot.forEach((doc) => {
+      docId = doc.id;
+    });
+
+    const idRef = doc(db, "Noticia", docId);
+
+    await updateDoc(idRef, {
+      id: id,
+      tituloDeNoticia: tituloDeNoticia,
+      resumenNoticia: resumenNoticia,
+      imagenNoticia: imagenNoticia,
+      contenidoHTML: contenidoHTML,
+      publicada: publicada,
+      fecha: fecha,
+      idEmpresa: idEmpresa,
+    });
+
+    console.log("Se envío todo bien");
   } catch (error) {
     console.error("Error al leer datos: ", error);
   }

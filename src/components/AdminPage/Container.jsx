@@ -86,8 +86,9 @@ const Container = () => {
   return (
     <div className="w-full ">
       <div
-        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${enviado ? "translate-x-0 " : "-translate-x-72 "
-          }`}
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          enviado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
       >
         <div className="h-14 p-1 rounded-md bg-green-400" />
         <h1 className="text-green-400 font-semibold text-xl">
@@ -96,8 +97,9 @@ const Container = () => {
       </div>
 
       <div
-        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${modificado ? "translate-x-0 " : "-translate-x-72 "
-          }`}
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          modificado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
       >
         <div className="h-14 p-1 rounded-md bg-yellow-400" />
         <h1 className="text-yellow-400 font-semibold text-xl">
@@ -106,8 +108,9 @@ const Container = () => {
       </div>
 
       <div
-        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${eliminado ? "translate-x-0 " : "-translate-x-72 "
-          }`}
+        className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${
+          eliminado ? "translate-x-0 " : "-translate-x-72 "
+        }`}
       >
         <div className="h-14 p-1 rounded-md bg-red-500" />
         <h1 className="text-red-500 font-semibold text-xl">

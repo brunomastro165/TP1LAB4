@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import {
   agregarNoticia,
   eliminarEmpresa,
@@ -50,9 +52,7 @@ const Card = (props) => {
       form.telefono
     );
 
-    setTimeout(() => {
-      props.setUpdate(!props.update);
-    }, 500);
+    props.setUpdate(!props.update);
 
     props.setModificado(true);
 
@@ -110,10 +110,7 @@ const Card = (props) => {
             <h1 className=" text-blue-600 text-2xl font-semibold mb-8">
               Modificar {form.nombreEmpresa}
             </h1>
-            <form
-              className="w-full md:max-w-xl mx-auto text-start"
-              onSubmit={handleSubmit}
-            >
+            <div className="w-full md:max-w-xl mx-auto text-start">
               <div className="relative z-0 w-full mb-5 group">
                 <input
                   className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -305,8 +302,8 @@ const Card = (props) => {
                 </button>
 
                 <button
-                  type="submit"
                   className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition-all mx-4 w-full md:w-1/4 my-2 md:my-0"
+                  onClick={handleSubmit}
                 >
                   Guardar
                 </button>
@@ -323,7 +320,7 @@ const Card = (props) => {
                   Eliminar empresa
                 </button>
               </div>
-            </form>
+            </div>
           </div>
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>

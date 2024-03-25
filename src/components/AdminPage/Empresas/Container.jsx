@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { traerEmpresas, agregarEmpresa } from "../../db/operaciones";
+import { traerEmpresas, agregarEmpresa } from "../../../db/operaciones";
 import Card from "./Card";
 import { Link } from "react-router-dom";
 
@@ -119,7 +119,7 @@ const Container = () => {
       </div>
 
       <div className="mx-8 flex flex-col items-center justify-center">
-        <div className="w-full md:w-2/3 lg:w-1/2 p-4  border border-gray-200 rounded-lg mt-4 mb-4">
+        <div className="w-full md:w-full lg:w-1/2 p-4  border border-gray-200 rounded-lg mt-4 mb-4">
           <div className="flex items-center justify-center mb-4 ">
             <h5 className=" font-bold leading-none text-blue-600 text-center text-2xl">
               Listado de empresas

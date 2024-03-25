@@ -113,7 +113,9 @@ const NoticiaCard = (props) => {
             <p className="mb-3 font-normal text-gray-700  w-48 h-24 overflow-hidden">
               {props.resumenNoticia}
             </p>
-            <p className="mb-3 font-normal text-gray-700 ">(Texto resumido)</p>
+            <p className="mb-3 text-blue-600 text-xl font-semibold ">
+              {props.fecha}
+            </p>
             <a
               className="inline-flex items-center px-3 p-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 mt-4 cursor-pointer"
               onClick={() => setOpen(true)}
@@ -198,6 +200,7 @@ const NoticiaCard = (props) => {
                   </label>
                   <div className="flex text-center items-center mt-4">
                     <input
+                      onChange={handleChange}
                       className="mx-4 "
                       type="radio"
                       id="opcion1"
@@ -206,6 +209,7 @@ const NoticiaCard = (props) => {
                     />
                     <label htmlFor="opcion1">Si</label>
                     <input
+                      onChange={handleChange}
                       className="mx-4"
                       type="radio"
                       id="opcion2"

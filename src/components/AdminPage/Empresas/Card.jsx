@@ -5,9 +5,9 @@ import {
   eliminarEmpresa,
   modificarEmpresa,
   traerNoticiaId,
-} from "../../db/operaciones";
+} from "../../../db/operaciones";
 import React, { useState } from "react";
-import NoticiaCard from "./Noticias/NoticiaCard";
+import NoticiaCard from "../Noticias/NoticiaCard";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";

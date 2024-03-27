@@ -41,6 +41,7 @@ function AppContent() {
         <Route path="AdminNoticias" element={<NoticiaPage />} />
         <Route path="subirImagen" element={<SubirImagen />} />
         <Route path="/empresa/:id" element={<Empresa />} />
+        <Route path="/empresas" element={<Empresas />} />
       </Routes>
     </>
   );

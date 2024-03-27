@@ -12,7 +12,7 @@ export const Empresas = () => {
 
     console.log(empresas);
     return (
-        <div className="grid grid-cols-2 gap-4 p-4 flex place-content-center ">
+        <div className="grid grid-cols-2 gap-4 p-4 place-content-center ">
             <div className="flex place-content-center font-bold my-7">Empresas</div>
             <div className="flex place-content-center font-bold my-7">
                 Paginas

@@ -13,8 +13,8 @@ const NoticiaPage = () => {
   const [noticia, setNoticia] = useState([]);
   const [idEmpresa, setIdEmpresa] = useState(0);
   const [isOpen, setOpen] = useState(false);
-  const [textEditor, setTextEditor] = useState(true);
-  const [HTMLText, setHTMLText] = useState("pija?");
+  const [textEditor, setTextEditor] = useState(false);
+  const [HTMLText, setHTMLText] = useState("");
 
   //Listo que capo que soy
   useEffect(() => {

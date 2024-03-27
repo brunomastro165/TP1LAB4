@@ -5,6 +5,7 @@ import Selector from "./components/Selector/Selector";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import SubirImagen from "./components/UploadFileTest/SubirImagen";
 import Empresa from "./components/EmpresaPage/Empresa";
+import { Empresas } from './components/Empresas/Empresas';
 function App() {
   return (
     <Router>
@@ -30,7 +31,8 @@ function AppContent() {
     <>
       {showSelector && showSelector2 && <Selector />}
       <Routes>
-      <Route path="/" element={<Selector />} />
+      <Route path="/empresas" element={<Empresas />} />
+        <Route path="/" element={<Selector />} />
         <Route path="administrador" element={<Container />} />
         <Route path="usuario" element={<Container />} />
         <Route path="AdminNoticias" element={<NoticiaPage />} />

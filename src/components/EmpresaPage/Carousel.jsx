@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
 } from "react-icons/bs";
+import { Noticia } from "./Noticia";
 
 export const Carousel = ({ slides }) => {
   let [current, setCurrent] = useState(0);
@@ -25,16 +26,13 @@ export const Carousel = ({ slides }) => {
           transform: `translateX(-${current * 100}%)`,
         }}
       >
-        {slides.map((s) => {
+        <Noticia noticias={slides}/>
+        {slides.map((s, index) => {
           return (
-            <img
-              src={s}
-              className="w-full h-full object-cover cursor-pointer z-10"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = s; // Reemplaza esto con la URL de tu página
-              }}
-            />
+            <React.Fragment key={index}>
+              <Noticia noticia={s} />
+              <Noticia noticia={s} />
+            </React.Fragment>
           );
         })}
       </div>
@@ -50,7 +48,7 @@ export const Carousel = ({ slides }) => {
       >
         <BsFillArrowRightCircleFill />
       </button>
-      <div className="absolute bottom-0 py-4 flex justify-center gap-3 w-full ">
+      <div className="absolute bottom-0 py-4 flex justify-center gap-3 w-full   ">
         {slides.map((s, i) => {
           return (
             <div

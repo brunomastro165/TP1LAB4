@@ -1,8 +1,13 @@
-import { useState, useEffect } from 'react';
-import Container from "./components/AdminPage/Container";
+import { useState, useEffect } from "react";
+import Container from "./components/AdminPage/Empresas/Container";
 import NoticiaPage from "./components/AdminPage/Noticias/NoticiaPage";
 import Selector from "./components/Selector/Selector";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import SubirImagen from "./components/UploadFileTest/SubirImagen";
 import Empresa from "./components/EmpresaPage/Empresa";
 import { Empresas } from './components/Empresas/Empresas';
@@ -29,11 +34,9 @@ function AppContent() {
 
   return (
     <>
-      {showSelector && showSelector2 && <Selector />}
+      {/* {showSelector && showSelector2 && <Selector />} */}
       <Routes>
-      <Route path="/empresas" element={<Empresas />} />
-        <Route path="/" element={<Selector />} />
-        <Route path="administrador" element={<Container />} />
+        <Route path="/" element={<Container />} />
         <Route path="usuario" element={<Container />} />
         <Route path="AdminNoticias" element={<NoticiaPage />} />
         <Route path="subirImagen" element={<SubirImagen />} />

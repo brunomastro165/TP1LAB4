@@ -11,6 +11,7 @@ import {
 import SubirImagen from "./components/UploadFileTest/SubirImagen";
 import Empresa from "./components/EmpresaPage/Empresa";
 import { Empresas } from './components/Empresas/Empresas';
+import Noticiahtml from "./components/EmpresaPage/Noticiahtml";
 function App() {
   return (
     <Router>
@@ -41,6 +42,7 @@ function AppContent() {
         <Route path="AdminNoticias" element={<NoticiaPage />} />
         <Route path="subirImagen" element={<SubirImagen />} />
         <Route path="/empresa/:id" element={<Empresa />} />
+        <Route path="/Noticia/:id" element={<Noticiahtml />} />
         <Route path="/empresas" element={<Empresas />} />
       </Routes>
     </>

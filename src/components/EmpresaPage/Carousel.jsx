@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 export const Carousel = ({ slides }) => {
   var settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -19,7 +19,6 @@ export const Carousel = ({ slides }) => {
       return (
         <div key={index} style={{width: "200px", flexShrink: 0}}>
           <Noticia noticia={s} />
-          
         </div>
       );
     })}

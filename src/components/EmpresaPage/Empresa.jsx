@@ -6,6 +6,7 @@ import Descripcion from './Descripcion';
 import Mapa from './Mapa';
 import { useParams } from 'react-router-dom';
 import { traerEmpresas, traerNoticiaId } from '../../db/operaciones';
+import NoticiasFiltro from './NoticiasFiltro';
 
 export const Empresa = () => {
 
@@ -34,7 +35,7 @@ export const Empresa = () => {
                         {empresa.id === idC ? (
                             <>
                                 <NavbarEmpresa telefono={empresa.telefono} nombreEmpresa={empresa.denominacion} horarios={empresa.horarioAtencion} />
-                                <Carousel slides={noticias} />
+                                <NoticiasFiltro noticias={noticias} />
                                 <Descripcion texto={empresa.quienesSomos} />
                                 <Mapa latitud={empresa.latitud} longitud={empresa.longitud} />
                                 <FooterEmpresa nombreEmpresa={empresa.nombreEmpresa} domicilio={empresa.domicilio} />

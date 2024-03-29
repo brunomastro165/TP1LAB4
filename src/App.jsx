@@ -12,6 +12,7 @@ import SubirImagen from "./components/UploadFileTest/SubirImagen";
 import Empresa from "./components/EmpresaPage/Empresa";
 import { Empresas } from './components/Empresas/Empresas';
 import Noticiahtml from "./components/EmpresaPage/Noticiahtml";
+import { Buscador } from "./components/EmpresaPage/Buscador";
 function App() {
   return (
     <Router>
@@ -44,6 +45,7 @@ function AppContent() {
         <Route path="/empresa/:id" element={<Empresa />} />
         <Route path="/Noticia/:id" element={<Noticiahtml />} />
         <Route path="/empresas" element={<Empresas />} />
+        <Route path="/buscarNoticias/:id" element={<Buscador />} />
       </Routes>
     </>
   );

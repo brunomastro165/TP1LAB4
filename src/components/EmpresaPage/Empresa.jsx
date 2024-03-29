@@ -35,7 +35,7 @@ export const Empresa = () => {
                         {empresa.id === idC ? (
                             <>
                                 <NavbarEmpresa telefono={empresa.telefono} nombreEmpresa={empresa.denominacion} horarios={empresa.horarioAtencion} />
-                                <NoticiasFiltro noticias={noticias} />
+                                <NoticiasFiltro noticias={noticias} id={empresa.id} />
                                 <Descripcion texto={empresa.quienesSomos} />
                                 <Mapa latitud={empresa.latitud} longitud={empresa.longitud} />
                                 <FooterEmpresa nombreEmpresa={empresa.nombreEmpresa} domicilio={empresa.domicilio} />

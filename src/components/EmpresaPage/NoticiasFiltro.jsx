@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import Carousel from './Carousel';
 
-const NoticiasFiltro = ({ noticias }) => {
-    const [busqueda, setBusqueda] = useState('');
-
-    const noticiasFiltradas = noticias.filter(noticia =>
-        noticia.tituloDeNoticia.toLowerCase().includes(busqueda.toLowerCase())
-    );
-    console.log(noticiasFiltradas)
+const NoticiasFiltro = ({ noticias, id }) => {
 
     return (
         <div >
@@ -22,16 +16,12 @@ const NoticiasFiltro = ({ noticias }) => {
 
                 <div className='flex justify-end w-full items-center mx-6'>
                     <img className=' h-max w-16 mx-5' src="https://www.freeiconspng.com/uploads/search-icon-png-21.png" alt="" />
-                    <input
-                        type="text"
-                        placeholder="Buscar noticias..."
-                        className="w-64 h-16 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 border-solid border-2 border-indigo-600"
-                        onChange={e => setBusqueda(e.target.value)}
-                    />
+                    <a href={`/buscarNoticias/${id}`} className='w-64 h-16 px-3 py-2 text-3xl placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 border-solid border-2 border-indigo-600 hover:bg-blue-600 hover:text-gray-200'>Buscar noticias</a>
+                    
                 </div>
 
             </div>
-            <Carousel slides={noticiasFiltradas} />
+            <Carousel slides={noticias} />
         </div>
     );
 };

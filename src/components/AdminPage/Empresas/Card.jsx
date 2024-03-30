@@ -121,6 +121,7 @@ const Card = (props) => {
                   value={form.nombreEmpresa}
                   onChange={handleChange}
                   maxLength={50}
+                  required
                 />
                 <label
                   htmlFor="nombreEmpresa"

@@ -10,9 +10,10 @@ import {
 } from "react-router-dom";
 import SubirImagen from "./components/UploadFileTest/SubirImagen";
 import Empresa from "./components/EmpresaPage/Empresa";
-import { Empresas } from './components/Empresas/Empresas';
+import { Empresas } from "./components/Empresas/Empresas";
 import Noticiahtml from "./components/EmpresaPage/Noticiahtml";
 import { Buscador } from "./components/EmpresaPage/Buscador";
+import PantallaInicio from "./components/AdminPage/PantallaInicio/PantallaInicio";
 function App() {
   return (
     <Router>
@@ -38,7 +39,8 @@ function AppContent() {
     <>
       {/* {showSelector && showSelector2 && <Selector />} */}
       <Routes>
-        <Route path="/" element={<Container />} />
+        <Route path="/" element={<PantallaInicio />} />
+        <Route path="/admin" element={<Container />} />
         <Route path="usuario" element={<Container />} />
         <Route path="AdminNoticias" element={<NoticiaPage />} />
         <Route path="subirImagen" element={<SubirImagen />} />

@@ -1,24 +1,25 @@
-import React from 'react'
+import React from "react";
 
 export const Noticia = ({ noticia }) => {
-    return (
-        <div className='relative' onc>
-            <img
-                src={noticia.imagenNoticia}
-                className="w-full flex object-cover cursor-pointer z-0"
-                onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = `/Noticia/${noticia.id}`
-                }}
-            />
-            <div className=' absolute left-3/4 z-10 text-5xl font-bold text-blue-600 bg-gray-200 rounded-bl-2xl px-10 pb-10 top-0 pt-20'>
-                {noticia.tituloDeNoticia}
-                <p className=' text-sm text-black my-5 '>
-                    {noticia.resumenNoticia}
-                </p>
-            </div>
-
-
+  return (
+    <>
+      <div
+        className="h-screen w-full"
+        style={{
+          backgroundImage: `url(${noticia.imagenNoticia})`,
+          backgroundSize: "100% 100%",
+          height: "80vh",
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.href = `/Noticia/${noticia.id}`;
+        }}
+      >
+        <div className=" absolute bottom-0 z-10 text-5xl max-w-6xl font-bold text-white bg-cyan-400 bg-opacity-90 px-10 pb-5 rounded-md pt-5 ">
+          {noticia.tituloDeNoticia}
+          <p className=" text-lg text-white my-5 ">{noticia.resumenNoticia}</p>
         </div>
-    );
-}
+      </div>
+    </>
+  );
+};

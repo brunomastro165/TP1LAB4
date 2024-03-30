@@ -19,7 +19,7 @@ const NoticiaCard = (props) => {
   const [idEmpresa, setIdEmpresa] = useState(props.idEmpresa);
   const [isOpen, setOpen] = useState(false);
   const [textEditor, setTextEditor] = useState(false);
-  const [HTMLText, setHTMLText] = useState(props.HTMLText);
+  const [HTMLText, setHTMLText] = useState(props.contenidoHTML);
 
   const [form, setForm] = useState({
     tituloDeNoticia: props.tituloDeNoticia,
@@ -62,15 +62,6 @@ const NoticiaCard = (props) => {
       props.id
     );
 
-    setForm({
-      tituloDeNoticia: "",
-      resumenDeNoticia: "",
-      imagenNoticia: "",
-      contenidoHTML: "",
-      publicada: "",
-      fecha: "",
-    });
-
     pushNoticias(idEmpresa);
     setOpen(false);
   };
@@ -95,7 +86,7 @@ const NoticiaCard = (props) => {
     <>
       <div className="flex flex-col items-center justify-center text-center m-10 md:m-5 overflow-hidden">
         <div className=" bg-white border border-gray-200 rounded-lg shadow flex flex-col md:flex-row items-center">
-          <a href="#">
+          <a>
             <div className="w-72 h-72 overflow-hidden rounded-xl m-4">
               <img
                 className="min-w-full min-h-full object-cover rounded-l-md"
@@ -105,7 +96,7 @@ const NoticiaCard = (props) => {
             </div>
           </a>
           <div className="p-5 overflow-hidden">
-            <a href="#">
+            <a>
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
                 {props.tituloDeNoticia}
               </h5>
@@ -162,6 +153,7 @@ const NoticiaCard = (props) => {
                   value={form.tituloDeNoticia}
                   onChange={handleChange}
                   maxLength={128}
+                  required
                 />
                 <label
                   htmlFor="tituloDeNoticia"

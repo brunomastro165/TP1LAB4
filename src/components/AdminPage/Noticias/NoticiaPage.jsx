@@ -26,13 +26,6 @@ const NoticiaPage = () => {
     setIdEmpresa(id);
   }, [location.state]); // Se ejecuta cada vez que `location.state` cambia
 
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       setModificado(false);
-  //       setEliminado(false);
-  //     }, 4000);
-  //   }, [modificado, eliminado]);
-
   const [form, setForm] = useState({
     tituloDeNoticia: "",
     resumenNoticia: "",
@@ -104,16 +97,16 @@ const NoticiaPage = () => {
 
   return (
     <>
-      <Link to={"/"} className="">
+      <Link to={"/admin"} className="">
         <div className="m-12 w-24 h-12 group">
           <FaArrowAltCircleLeft className="text-5xl fixed text-blue-600 group-hover:scale-105 transition-all group-hover:-translate-x-8" />
         </div>
       </Link>
       <div className="pt-24 flex flex-wrap justify-center items-center">
-        {noticia.map((n, i) => {
+        {noticia.map((n) => {
           return (
             <NoticiaCard
-              key={i}
+              key={n.id}
               id={n.id}
               tituloDeNoticia={n.tituloDeNoticia}
               resumenNoticia={n.resumenNoticia}
@@ -235,7 +228,7 @@ const NoticiaPage = () => {
                   <div className="flex flex-col items-center md:items-start relative z-0 w-full mb-5 group">
                     <h1 className="text-gray-500 text-sm">Contenido HTML:</h1>
                     <button
-                      className="flex px-4 py-2 text-white font-semibold bg-blue-600 rounded hover:bg-blue-700 transition-all self-center items-center w-1/2 md:w-full mt-2 
+                      className="flex px-4 py-2 text-white font-semibold bg-blue-600 rounded hover:bg-blue-700 transition-all self-center items-center w-1/2 md:w-full mt-2
                     justify-between  group"
                       onClick={() => setTextEditor(true)}
                     >

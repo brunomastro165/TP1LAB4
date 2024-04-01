@@ -26,7 +26,7 @@ const NoticiasFiltro = ({ noticias, id }) => {
           />
           <a
             href={`/buscarNoticias/${id}`}
-            className="w-1/6 h-16 px-3 py-2 text-3xl placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 border-solid border-2 border-indigo-600 text-center hover:bg-blue-600 hover:text-gray-200"
+            className=" px-3 py-2 text-xl placeholder-gray-500 items-center flex text-gray-900 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 border-solid border-2 border-indigo-600 text-center hover:bg-blue-600 hover:text-gray-200"
           >
             Buscar noticias
           </a>

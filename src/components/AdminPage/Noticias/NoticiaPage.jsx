@@ -268,29 +268,7 @@ const NoticiaPage = () => {
                     </button>
                   </div>
 
-                  <div className="relative z-0 w-full mb-5 group">
-                    <div>
-                      <label
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                        htmlFor="imagenNoticia"
-                      >
-                        Subir imagen
-                      </label>
-                      <input
-                        type="file"
-                        required
-                        aria-describedby="imagenNoticia"
-                        id="imagenNoticia"
-                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
-                        name="imagenNoticia"
-                        onChange={handleUpload}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 md:gap-6">
-                  <div className="relative z-0 w-full mb-5 group">
+                  <div className="relative z-0 w-full mt-6 group">
                     <input
                       type="date"
                       name="fecha"
@@ -310,10 +288,45 @@ const NoticiaPage = () => {
                   </div>
                 </div>
 
+                <div className=" md:gap-6">
+                  <div className="relative z-0 w-full mb-5 group">
+                    <div>
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-900"
+                        htmlFor="imagenNoticia"
+                      >
+                        Subir imagen
+                      </label>
+
+                      <div className="flex flex-col justify-center items-center">
+                        <input
+                          type="file"
+                          aria-describedby="imagenNoticia"
+                          id="imagenNoticia"
+                          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
+                          name="imagenNoticia"
+                          onChange={handleUpload}
+                          required
+                        />
+                        <img
+                          src={form.imagenNoticia}
+                          className="w-48 h-48 rounded-md mt-4 items-center self-center"
+                        ></img>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap justify-center mt-8 mb-4">
                   <button
                     className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full md:w-1/4 "
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false),
+                        setForm((prevForm) => ({
+                          ...prevForm,
+                          imagenNoticia: "",
+                        }));
+                    }}
                   >
                     Cerrar
                   </button>

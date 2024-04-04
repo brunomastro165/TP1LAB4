@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { traerEmpresas, agregarEmpresa } from "../../../db/operaciones";
 import Card from "./Card";
 import { Link } from "react-router-dom";
+import { IoHomeOutline } from "react-icons/io5";
 
 const Container = () => {
   const [empresas, setEmpresas] = useState([]);
@@ -95,6 +96,16 @@ const Container = () => {
           Se subió una Empresa
         </h1>
       </div>
+
+      <Link
+        to={"/"}
+        className={`flex flex-row fixed items-center justify-center right-0 bg-white p-5 w-60 rounded-md text-blue-600 font-semibold text-center m-2 transition-all duration-200 shadow-md group hover:bg-blue-600 hover:text-white `}
+      >
+        <span className="flex flex-row items-center justify-center">
+          <IoHomeOutline className=" text-2xl" />
+          <h1 className=" font-semibold text-xl ml-5">Inicio</h1>
+        </span>
+      </Link>
 
       <div
         className={`flex flex-row fixed bg-white p-5 w-60 rounded-md text-white font-semibold text-center m-2 transition-all duration-75 shadow-md ${

@@ -12,6 +12,7 @@ import { subirArchivo } from "../../../db/subirArchivos";
 import { agregarNoticia } from "../../../db/operaciones";
 import { useLocation } from "react-router-dom";
 import Tiny from "./TextEditor/Tiny";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const NoticiaCard = (props) => {
   const location = useLocation();
@@ -20,6 +21,9 @@ const NoticiaCard = (props) => {
   const [isOpen, setOpen] = useState(false);
   const [textEditor, setTextEditor] = useState(false);
   const [HTMLText, setHTMLText] = useState(props.contenidoHTML);
+  const [subiendo, setSubiendo] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorGenerico, setErrorGenerico] = useState(false);
 
   const [form, setForm] = useState({
     tituloDeNoticia: props.tituloDeNoticia,
@@ -51,29 +55,56 @@ const NoticiaCard = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await modificarNoticia(
-      form.tituloDeNoticia,
-      form.resumenNoticia,
-      form.imagenNoticia,
-      HTMLText,
-      form.publicada,
-      form.fecha,
-      idEmpresa,
-      props.id
-    );
+    try {
+      await modificarNoticia(
+        form.tituloDeNoticia,
+        form.resumenNoticia,
+        form.imagenNoticia,
+        HTMLText,
+        form.publicada,
+        form.fecha,
+        idEmpresa,
+        props.id
+      );
 
-    pushNoticias(idEmpresa);
-    setOpen(false);
+      pushNoticias(idEmpresa);
+      setOpen(false);
+      console.log("sexualidad");
+    } catch (error) {
+      setErrorGenerico(true);
+      setTimeout(() => {
+        setErrorGenerico(false);
+      }, 4000);
+    }
   };
 
   const handleUpload = async (e) => {
+    setSubiendo(true);
     e.preventDefault();
-    const url = await subirArchivo(e.target.files[0]);
+    const archivo = e.target.files[0];
+    const tipo = archivo.type;
+    if (tipo !== "image/jpeg" && tipo !== "image/png") {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+      setForm((prevForm) => ({
+        ...prevForm,
+        imagenNoticia: "",
+      }));
 
-    setForm((prevForm) => ({
-      ...prevForm,
-      imagenNoticia: url,
-    }));
+      setSubiendo(false);
+    } else {
+      // Aquí va el código para subir el archivo
+      const url = await subirArchivo(archivo);
+      setForm((prevForm) => ({
+        ...prevForm,
+        imagenNoticia: url,
+      }));
+
+      console.log(url);
+      setSubiendo(false);
+    }
   };
 
   const handleEliminate = async (e) => {
@@ -300,6 +331,46 @@ const NoticiaCard = (props) => {
       )}
 
       {textEditor && <Tiny setHTML={setHTMLText} setOpen={setTextEditor} />}
+
+      {subiendo && (
+        <>
+          {console.log("que")}
+          <div className="fixed inset-0 flex flex-col items-center justify-center transition-all duration-150 w-full bg-black bg-opacity-40 ">
+            <div className="bg-white rounded-md p-10 font-semibold flex flex-col justify-center items-center">
+              <h1 className="mb-5">Subiendo imagen... </h1>
+              <AiOutlineLoading3Quarters className="animate-spin text-2xl text-blue-600" />
+            </div>
+          </div>
+        </>
+      )}
+
+      {error && (
+        <>
+          <div className="fixed top-0 flex flex-col items-center justify-center transition-all duration-150 w-full p-5  ">
+            <div className=" shadow-lg border-red-600 bg-white rounded-md p-4 text-gray-800  font-semibold flex flex-col justify-center items-center">
+              <h1 className="font-bold text-red-600 self-center">¡ERROR!</h1>
+              <h1 className="text-xs md:text-xl mb-5">
+                Seleccione una imagen .jpg o .png
+              </h1>
+              <div className="w-2/3 h-1 rounded-full bg-red-600 self-center"></div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {errorGenerico && (
+        <>
+          <div className="fixed top-0 flex flex-col items-center justify-center transition-all duration-150 w-full p-5  ">
+            <div className=" shadow-lg border-red-600 bg-white rounded-md p-4 text-gray-800  font-semibold flex flex-col justify-center items-center">
+              <h1 className="font-bold text-red-600 self-center">¡ERROR!</h1>
+              <h1 className="text-xs md:text-xl mb-5">
+                Complete todos los campos
+              </h1>
+              <div className="w-2/3 h-1 rounded-full bg-red-600 self-center"></div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

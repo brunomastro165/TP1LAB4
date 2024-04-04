@@ -18,6 +18,7 @@ const Card = (props) => {
   const [isDelete, setDelete] = useState(false);
   const [noticias, setNoticias] = useState(false);
   const [noticiasId, setNoticiasId] = useState([]);
+  const [error, setError] = useState(false);
 
   const [form, setForm] = useState({
     nombreEmpresa: props.nombreEmpresa,
@@ -39,24 +40,31 @@ const Card = (props) => {
   };
 
   const handleSubmit = async () => {
-    await modificarEmpresa(
-      props.id,
-      form.nombreEmpresa,
-      form.denominacion,
-      form.domicilio,
-      form.email,
-      form.horarioAtencion,
-      form.latitud,
-      form.longitud,
-      form.quienesSomos,
-      form.telefono
-    );
+    try {
+      await modificarEmpresa(
+        props.id,
+        form.nombreEmpresa,
+        form.denominacion,
+        form.domicilio,
+        form.email,
+        form.horarioAtencion,
+        form.latitud,
+        form.longitud,
+        form.quienesSomos,
+        form.telefono
+      );
 
-    props.setUpdate(!props.update);
+      props.setUpdate(!props.update);
 
-    props.setModificado(true);
+      props.setModificado(true);
 
-    setOpen(false);
+      setOpen(false);
+    } catch (error) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+    }
   };
 
   //Con esta función manejo el enrutamiento hacia adminNoticias
@@ -361,42 +369,20 @@ const Card = (props) => {
         </div>
       )}
 
-      {noticias && (
-        <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 font-semiboldold w-full">
-          <div className="bg-white rounded shadow-lg p-8 m-4 max-w-lg max-h-full text-center md:overflow-hidden z-50 w-full">
-            <h1 className=" text-red-600 text-2xl font-semibold mb-8">
-              Listado de noticias de {props.nombreEmpresa}:
-            </h1>
-            <div>
-              {noticiasId.map((noticia) => {
-                return <NoticiaCard key={noticia.id} />;
-              })}
-            </div>
-            <div className="flex flex-wrap justify-center mt-8 mb-4">
-              <button
-                className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-700 transition-all mx-4 w-full my-2"
-                onClick={() => {
-                  agregarNoticia(props.id, "nuevaNoticia");
-                  setTimeout(() => {
-                    props.setUpdate(!props.update);
-                    setOpen(true);
-                    setNoticias(false);
-                  }, 100);
-                }}
-              >
-                Agregar noticia
-              </button>
+    
 
-              <button
-                className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700 transition-all mx-4 w-full my-2"
-                onClick={() => setNoticias(false)}
-              >
-                Volver
-              </button>
+      {error && (
+        <>
+          <div className="fixed  top-0 left-0 flex flex-col items-center justify-center transition-all duration-150 w-full p-5  ">
+            <div className=" shadow-lg border-red-600 bg-white rounded-md p-4 text-gray-800  font-semibold flex flex-col justify-center items-center">
+              <h1 className="font-bold text-red-600 self-center">¡ERROR!</h1>
+              <h1 className="text-xs md:text-xl mb-5">
+                Necesita rellenar todos los campos
+              </h1>
+              <div className="w-2/3 h-1 rounded-full bg-red-600 self-center"></div>
             </div>
           </div>
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-        </div>
+        </>
       )}
     </>
   );

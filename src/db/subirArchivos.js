@@ -17,9 +17,13 @@ const db = getFirestore(app);
 // Archivo es la imagen que pasamos
 // Con id manejamos el archivo subido desde el frontend
 export async function subirArchivo(archivo) {
-  const id = v4().toString();
-  const storageRef = ref(storage, id);
-  await uploadBytes(storageRef, archivo);
-  const url = await getDownloadURL(storageRef);
-  return url;
+  try {
+    const id = v4().toString();
+    const storageRef = ref(storage, id);
+    await uploadBytes(storageRef, archivo);
+    const url = await getDownloadURL(storageRef);
+    return url;
+  } catch (error) {
+    return "hubo un error";
+  }
 }

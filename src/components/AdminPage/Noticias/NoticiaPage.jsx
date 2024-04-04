@@ -10,6 +10,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import imagen from "../../../assets/noNoticia.svg";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const NoticiaPage = () => {
   const location = useLocation();
@@ -18,6 +19,9 @@ const NoticiaPage = () => {
   const [isOpen, setOpen] = useState(false);
   const [textEditor, setTextEditor] = useState(false);
   const [HTMLText, setHTMLText] = useState("No tiene HTML");
+  const [error, setError] = useState(false);
+  const [subiendo, setSubiendo] = useState(false);
+  const [errorGenerico, setErrorGenerico] = useState(false);
 
   //Listo que capo que soy
   useEffect(() => {
@@ -45,42 +49,67 @@ const NoticiaPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await agregarNoticia(
-      form.tituloDeNoticia,
-      form.resumenNoticia,
-      form.imagenNoticia,
-      HTMLText,
-      form.publicada,
-      form.fecha,
-      idEmpresa
-    );
+    try {
+      await agregarNoticia(
+        form.tituloDeNoticia,
+        form.resumenNoticia,
+        form.imagenNoticia,
+        HTMLText,
+        form.publicada,
+        form.fecha,
+        idEmpresa
+      );
 
-    setForm({
-      tituloDeNoticia: "",
-      resumenDeNoticia: "",
-      imagenNoticia: "",
-      contenidoHTML: "",
-      publicada: "",
-      fecha: "",
-    });
+      setForm({
+        tituloDeNoticia: "",
+        resumenDeNoticia: "",
+        imagenNoticia: "",
+        contenidoHTML: "",
+        publicada: "",
+        fecha: "",
+      });
 
-    // setTimeout(() => {
-    //   setUpdate(!update);
-    // }, 500);
-
-    setOpen(false);
-
-    pushNoticias(idEmpresa);
+      // setTimeout(() => {
+      //   setUpdate(!update);
+      // }, 500);
+      setOpen(false);
+      pushNoticias(idEmpresa);
+    } catch (error) {
+      setErrorGenerico(true);
+      setTimeout(() => {
+        setErrorGenerico(false);
+      }, 4000);
+    }
   };
 
   const handleUpload = async (e) => {
+    setSubiendo(true);
     e.preventDefault();
-    const url = await subirArchivo(e.target.files[0]);
+    const archivo = e.target.files[0];
+    const tipo = archivo.type;
+    if (tipo !== "image/jpeg" && tipo !== "image/png") {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+      setForm((prevForm) => ({
+        ...prevForm,
+        imagenNoticia: "",
+      }));
 
-    setForm((prevForm) => ({
-      ...prevForm,
-      imagenNoticia: url,
-    }));
+      setSubiendo(false);
+    } else {
+      // Aquí va el código para subir el archivo
+      console.log("sex");
+      const url = await subirArchivo(archivo);
+      setForm((prevForm) => ({
+        ...prevForm,
+        imagenNoticia: url,
+      }));
+
+      console.log(url);
+      setSubiendo(false);
+    }
   };
 
   const navigate = useNavigate();
@@ -103,21 +132,23 @@ const NoticiaPage = () => {
         </div>
       </Link>
       <div className="pt-24 flex flex-wrap justify-center items-center">
-        {noticia.map((n) => {
-          return (
-            <NoticiaCard
-              key={n.id}
-              id={n.id}
-              tituloDeNoticia={n.tituloDeNoticia}
-              resumenNoticia={n.resumenNoticia}
-              imagenNoticia={n.imagenNoticia}
-              contenidoHTML={n.contenidoHTML}
-              publicada={n.publicada}
-              fecha={n.fecha}
-              idEmpresa={idEmpresa}
-            />
-          );
-        })}
+        {noticia
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+          .map((n) => {
+            return (
+              <NoticiaCard
+                key={n.id}
+                id={n.id}
+                tituloDeNoticia={n.tituloDeNoticia}
+                resumenNoticia={n.resumenNoticia}
+                imagenNoticia={n.imagenNoticia}
+                contenidoHTML={n.contenidoHTML}
+                publicada={n.publicada}
+                fecha={n.fecha}
+                idEmpresa={idEmpresa}
+              />
+            );
+          })}
 
         {noticia.length === 0 ? (
           <div className="bg-white shadow-lg rounded-md text-2xl font-semibold p-5 flex flex-col items-center justify-center text-gray-800">
@@ -247,6 +278,7 @@ const NoticiaPage = () => {
                       </label>
                       <input
                         type="file"
+                        required
                         aria-describedby="imagenNoticia"
                         id="imagenNoticia"
                         className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none p-2 "
@@ -301,6 +333,45 @@ const NoticiaPage = () => {
         )}
 
         {textEditor && <Tiny setHTML={setHTMLText} setOpen={setTextEditor} />}
+
+        {subiendo && (
+          <>
+            <div className="fixed inset-0 flex flex-col items-center justify-center transition-all duration-150 w-full bg-black bg-opacity-40 ">
+              <div className="bg-white rounded-md p-10 font-semibold flex flex-col justify-center items-center">
+                <h1 className="mb-5">Subiendo imagen... </h1>
+                <AiOutlineLoading3Quarters className="animate-spin text-2xl text-blue-600" />
+              </div>
+            </div>
+          </>
+        )}
+
+        {error && (
+          <>
+            <div className="fixed top-0 flex flex-col items-center justify-center transition-all duration-150 w-full p-5  ">
+              <div className=" shadow-lg border-red-600 bg-white rounded-md p-4 text-gray-800  font-semibold flex flex-col justify-center items-center">
+                <h1 className="font-bold text-red-600 self-center">¡ERROR!</h1>
+                <h1 className="text-xs md:text-xl mb-5">
+                  Seleccione una imagen .jpg o .png
+                </h1>
+                <div className="w-2/3 h-1 rounded-full bg-red-600 self-center"></div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {errorGenerico && (
+          <>
+            <div className="fixed top-0 flex flex-col items-center justify-center transition-all duration-150 w-full p-5  ">
+              <div className=" shadow-lg border-red-600 bg-white rounded-md p-4 text-gray-800  font-semibold flex flex-col justify-center items-center">
+                <h1 className="font-bold text-red-600 self-center">¡ERROR!</h1>
+                <h1 className="text-xs md:text-xl mb-5">
+                  Complete todos los campos
+                </h1>
+                <div className="w-2/3 h-1 rounded-full bg-red-600 self-center"></div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

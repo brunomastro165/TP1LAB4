@@ -90,21 +90,35 @@ export const agregarNoticia = async (
   idEmpresa
 ) => {
   try {
-    const id = v4();
-    await addDoc(collection(db, "Noticia"), {
-      id: id,
-      tituloDeNoticia: tituloDeNoticia,
-      resumenNoticia: resumenNoticia,
-      imagenNoticia: imagenNoticia,
-      contenidoHTML: contenidoHTML,
-      publicada: publicada,
-      fecha: fecha,
-      idEmpresa: idEmpresa,
-    });
+    if (
+      tituloDeNoticia === "" ||
+      resumenNoticia === "" ||
+      imagenNoticia === "" ||
+      contenidoHTML === "" ||
+      publicada === "" ||
+      fecha === "" ||
+      idEmpresa === ""
+    ) {
+      console.log(imagenNoticia);
+      throw new Error("Algunos campos están incompletos");
+    } else {
+      const id = v4();
+      await addDoc(collection(db, "Noticia"), {
+        id: id,
+        tituloDeNoticia: tituloDeNoticia,
+        resumenNoticia: resumenNoticia,
+        imagenNoticia: imagenNoticia,
+        contenidoHTML: contenidoHTML,
+        publicada: publicada,
+        fecha: fecha,
+        idEmpresa: idEmpresa,
+      });
 
-    console.log("Se envío todo bien");
+      console.log("Se envío todo bien");
+    }
   } catch (error) {
     console.error("Error al leer datos: ", error);
+    throw new Error("Algunos campos están incompletos");
   }
 };
 
@@ -122,32 +136,44 @@ export const modificarEmpresa = async (
   telefonoN
 ) => {
   try {
-    const q = query(collection(db, "Empresa"), where("id", "==", id));
-    const querySnapshot = await getDocs(q);
+    if (
+      nombreEmpresaN === "" ||
+      denominacionN === "" ||
+      emailN === "" ||
+      horarioAtencionN === "" ||
+      latitudN === "" ||
+      longitudN === "" ||
+      quienesSomosN === "" ||
+      telefonoN === ""
+    ) {
+      throw new Error("Ha habido un error");
+    } else {
+      const q = query(collection(db, "Empresa"), where("id", "==", id));
+      const querySnapshot = await getDocs(q);
 
-    console.log("no de nuevo :(");
-    let docId;
-    querySnapshot.forEach((doc) => {
-      docId = doc.id;
-    });
+      let docId;
+      querySnapshot.forEach((doc) => {
+        docId = doc.id;
+      });
 
-    const idRef = doc(db, "Empresa", docId);
+      const idRef = doc(db, "Empresa", docId);
 
-    await updateDoc(idRef, {
-      nombreEmpresa: nombreEmpresaN,
-      denominacion: denominacionN,
-      domicilio: domicilioN,
-      email: emailN,
-      horarioAtencion: horarioAtencionN,
-      latitud: latitudN,
-      quienesSomos: quienesSomosN,
-      telefono: telefonoN,
-      longitud: longitudN,
-    });
+      await updateDoc(idRef, {
+        nombreEmpresa: nombreEmpresaN,
+        denominacion: denominacionN,
+        domicilio: domicilioN,
+        email: emailN,
+        horarioAtencion: horarioAtencionN,
+        latitud: latitudN,
+        quienesSomos: quienesSomosN,
+        telefono: telefonoN,
+        longitud: longitudN,
+      });
 
-    console.log("Enviado con éxito");
+      console.log("Enviado con éxito");
+    }
   } catch (error) {
-    console.error(error);
+    throw new Error("Ha habido un error");
   }
 };
 
@@ -218,29 +244,41 @@ export const modificarNoticia = async (
   id
 ) => {
   try {
-    const q = query(collection(db, "Noticia"), where("id", "==", id));
-    const querySnapshot = await getDocs(q);
+    if (
+      tituloDeNoticia === "" ||
+      resumenNoticia === "" ||
+      imagenNoticia === "" ||
+      contenidoHTML === "" ||
+      publicada === "" ||
+      fecha === "" ||
+      idEmpresa === ""
+    ) {
+      throw new Error("Algunos campos están incompletos");
+    } else {
+      const q = query(collection(db, "Noticia"), where("id", "==", id));
+      const querySnapshot = await getDocs(q);
 
-    let docId;
-    querySnapshot.forEach((doc) => {
-      docId = doc.id;
-    });
+      let docId;
+      querySnapshot.forEach((doc) => {
+        docId = doc.id;
+      });
 
-    const idRef = doc(db, "Noticia", docId);
+      const idRef = doc(db, "Noticia", docId);
 
-    await updateDoc(idRef, {
-      id: id,
-      tituloDeNoticia: tituloDeNoticia,
-      resumenNoticia: resumenNoticia,
-      imagenNoticia: imagenNoticia,
-      contenidoHTML: contenidoHTML,
-      publicada: publicada,
-      fecha: fecha,
-      idEmpresa: idEmpresa,
-    });
+      await updateDoc(idRef, {
+        id: id,
+        tituloDeNoticia: tituloDeNoticia,
+        resumenNoticia: resumenNoticia,
+        imagenNoticia: imagenNoticia,
+        contenidoHTML: contenidoHTML,
+        publicada: publicada,
+        fecha: fecha,
+        idEmpresa: idEmpresa,
+      });
 
-    console.log("Se envío todo bien");
+      console.log("Se envío todo bien");
+    }
   } catch (error) {
-    console.error("Error al leer datos: ", error);
+    throw new Error("Error al modificar la noticia");
   }
 };

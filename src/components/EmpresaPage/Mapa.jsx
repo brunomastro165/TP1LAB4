@@ -7,6 +7,7 @@ const Mapa = ({ latitud, longitud }) => {
   const mapInstanceRef = useRef(null);
 
   useEffect(() => {
+    try{
     if (mapRef.current) {
       if (!mapInstanceRef.current) {
         mapInstanceRef.current = L.map(mapRef.current).setView(
@@ -25,6 +26,7 @@ const Mapa = ({ latitud, longitud }) => {
         mapInstanceRef.current.setView([latitud, longitud], 13);
       }
     }
+  }catch(error){console.error(error)}
   }, [latitud, longitud]);
 
   return (

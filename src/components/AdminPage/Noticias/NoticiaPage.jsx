@@ -177,7 +177,7 @@ const NoticiaPage = () => {
 
         {isOpen && (
           <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 w-full ">
-            <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center md:overflow-hidden z-50">
+            <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center overflow-scroll z-50">
               <h1 className=" text-blue-600 text-2xl font-semibold mb-8">
                 Agregar Noticia
               </h1>
@@ -308,10 +308,13 @@ const NoticiaPage = () => {
                           onChange={handleUpload}
                           required
                         />
-                        <img
-                          src={form.imagenNoticia}
-                          className="w-48 h-48 rounded-md mt-4 items-center self-center"
-                        ></img>
+
+                        {form.imagenNoticia !== "" ? (
+                          <img
+                            src={form.imagenNoticia}
+                            className="w-48 h-48 rounded-md mt-4 items-center self-center"
+                          ></img>
+                        ) : null}
                       </div>
                     </div>
                   </div>

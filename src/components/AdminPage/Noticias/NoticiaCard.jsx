@@ -165,7 +165,7 @@ const NoticiaCard = (props) => {
 
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center transition-all duration-150 w-full ">
-          <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center md:overflow-hidden z-50">
+          <div className="bg-white rounded shadow-lg p-8 m-4 w-full md:w-1/2 max-h-full text-center overflow-scroll z-50">
             <h1 className=" text-blue-600 text-2xl font-semibold mb-8">
               Modificar {props.tituloDeNoticia}
             </h1>
